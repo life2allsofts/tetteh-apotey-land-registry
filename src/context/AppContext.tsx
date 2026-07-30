@@ -199,7 +199,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setPlots((prev) => [newPlot, ...prev]);
     setSelectedPlotId(newPlot.id);
     setHighlightedPlotId(newPlot.id);
-    setMapCenter(newPlot.center);
+    if (
+      newPlot.center &&
+      Array.isArray(newPlot.center) &&
+      newPlot.center.length === 2 &&
+      typeof newPlot.center[0] === 'number' &&
+      typeof newPlot.center[1] === 'number' &&
+      !isNaN(newPlot.center[0]) &&
+      !isNaN(newPlot.center[1]) &&
+      isFinite(newPlot.center[0]) &&
+      isFinite(newPlot.center[1])
+    ) {
+      setMapCenter(newPlot.center);
+    }
     setMapZoom(16);
   };
 
@@ -218,7 +230,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (newPlots.length > 0) {
       setSelectedPlotId(newPlots[0].id);
       setHighlightedPlotId(newPlots[0].id);
-      setMapCenter(newPlots[0].center);
+      if (
+        newPlots[0].center &&
+        Array.isArray(newPlots[0].center) &&
+        newPlots[0].center.length === 2 &&
+        typeof newPlots[0].center[0] === 'number' &&
+        typeof newPlots[0].center[1] === 'number' &&
+        !isNaN(newPlots[0].center[0]) &&
+        !isNaN(newPlots[0].center[1]) &&
+        isFinite(newPlots[0].center[0]) &&
+        isFinite(newPlots[0].center[1])
+      ) {
+        setMapCenter(newPlots[0].center);
+      }
       setMapZoom(14);
     }
   };

@@ -64,10 +64,22 @@ export const MapView: React.FC = () => {
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) return;
 
+    const safeCenter: [number, number] =
+      Array.isArray(mapCenter) &&
+      mapCenter.length === 2 &&
+      typeof mapCenter[0] === 'number' &&
+      typeof mapCenter[1] === 'number' &&
+      !isNaN(mapCenter[0]) &&
+      !isNaN(mapCenter[1]) &&
+      isFinite(mapCenter[0]) &&
+      isFinite(mapCenter[1])
+        ? [mapCenter[0], mapCenter[1]]
+        : [5.6037, -0.1870];
+
     // Create Leaflet Map instance
     const map = L.map(mapContainerRef.current, {
-      center: mapCenter,
-      zoom: mapZoom,
+      center: safeCenter,
+      zoom: mapZoom || 14,
       zoomControl: false
     });
 
