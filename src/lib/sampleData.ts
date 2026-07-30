@@ -259,3 +259,5 @@ export const initialPlots: Plot[] = [
     updatedAt: '2026-01-25T16:45:00Z'
   }
 ];
+
+export const SAMPLE_PLOTS = initialPlots;

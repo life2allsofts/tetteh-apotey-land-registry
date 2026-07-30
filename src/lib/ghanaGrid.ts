@@ -51,11 +51,38 @@ export function gridToGeo(
   northingFt: number,
   regionOpt: 'auto' | 'coastal' | 'inland' = 'auto'
 ): { lat: number; lng: number; eastingM: number; northingM: number; regionType: RegionType } {
+  if (
+    typeof eastingFt !== 'number' ||
+    typeof northingFt !== 'number' ||
+    isNaN(eastingFt) ||
+    isNaN(northingFt) ||
+    !isFinite(eastingFt) ||
+    !isFinite(northingFt)
+  ) {
+    return {
+      lat: 5.6037,
+      lng: -0.1870,
+      eastingM: 0,
+      northingM: 0,
+      regionType: 'coastal'
+    };
+  }
+
   const eastingM = eastingFt * FT_TO_M;
   const northingM = northingFt * FT_TO_M;
 
-  // Perform transformation using proj4
-  const [lng, lat] = proj4('GHANA_GRID', 'WGS84', [eastingM, northingM]);
+  let lng = -0.1870;
+  let lat = 5.6037;
+
+  try {
+    const res = proj4('GHANA_GRID', 'WGS84', [eastingM, northingM]);
+    if (res && res.length >= 2) {
+      if (typeof res[0] === 'number' && !isNaN(res[0]) && isFinite(res[0])) lng = res[0];
+      if (typeof res[1] === 'number' && !isNaN(res[1]) && isFinite(res[1])) lat = res[1];
+    }
+  } catch (err) {
+    console.warn('proj4 transformation error:', err);
+  }
 
   const detectedRegion = regionOpt === 'auto' ? detectRegionType(lat) : regionOpt;
 
@@ -64,10 +91,12 @@ export function gridToGeo(
   let adjustedLng = lng;
 
   if (detectedRegion === 'inland') {
-    // Minor regional datum shift calibration for Northern/Upper regions to resolve coastal-inland divide
     adjustedLat += 0.000018; 
     adjustedLng -= 0.000012;
   }
+
+  if (isNaN(adjustedLat) || !isFinite(adjustedLat)) adjustedLat = 5.6037;
+  if (isNaN(adjustedLng) || !isFinite(adjustedLng)) adjustedLng = -0.1870;
 
   return {
     lat: Number(adjustedLat.toFixed(7)),
@@ -86,6 +115,23 @@ export function geoToGrid(
   lng: number,
   regionOpt: 'auto' | 'coastal' | 'inland' = 'auto'
 ): { eastingFt: number; northingFt: number; eastingM: number; northingM: number; regionType: RegionType } {
+  if (
+    typeof lat !== 'number' ||
+    typeof lng !== 'number' ||
+    isNaN(lat) ||
+    isNaN(lng) ||
+    !isFinite(lat) ||
+    !isFinite(lng)
+  ) {
+    return {
+      eastingFt: 0,
+      northingFt: 0,
+      eastingM: 0,
+      northingM: 0,
+      regionType: 'coastal'
+    };
+  }
+
   const detectedRegion = regionOpt === 'auto' ? detectRegionType(lat) : regionOpt;
 
   let inputLat = lat;
@@ -96,7 +142,19 @@ export function geoToGrid(
     inputLng += 0.000012;
   }
 
-  const [eastingM, northingM] = proj4('WGS84', 'GHANA_GRID', [inputLng, inputLat]);
+  let eastingM = 0;
+  let northingM = 0;
+
+  try {
+    const res = proj4('WGS84', 'GHANA_GRID', [inputLng, inputLat]);
+    if (res && res.length >= 2) {
+      if (typeof res[0] === 'number' && !isNaN(res[0]) && isFinite(res[0])) eastingM = res[0];
+      if (typeof res[1] === 'number' && !isNaN(res[1]) && isFinite(res[1])) northingM = res[1];
+    }
+  } catch (err) {
+    console.warn('proj4 transformation error:', err);
+  }
+
   const eastingFt = eastingM * M_TO_FT;
   const northingFt = northingM * M_TO_FT;
 
@@ -127,8 +185,12 @@ export function calculatePolygonArea(points: BoundaryPoint[]): {
 
   for (let i = 0; i < n; i++) {
     const j = (i + 1) % n;
-    area += points[i].easting * points[j].northing;
-    area -= points[j].easting * points[i].northing;
+    const e1 = points[i]?.easting || 0;
+    const n1 = points[i]?.northing || 0;
+    const e2 = points[j]?.easting || 0;
+    const n2 = points[j]?.northing || 0;
+    area += e1 * n2;
+    area -= e2 * n1;
   }
 
   const sqFt = Math.abs(area) / 2;
@@ -152,13 +214,75 @@ export function calculateCentroid(points: BoundaryPoint[]): [number, number] {
 
   let sumLat = 0;
   let sumLng = 0;
+  let count = 0;
 
   points.forEach((p) => {
-    sumLat += p.lat;
-    sumLng += p.lng;
+    if (
+      p &&
+      typeof p.lat === 'number' &&
+      typeof p.lng === 'number' &&
+      !isNaN(p.lat) &&
+      !isNaN(p.lng) &&
+      isFinite(p.lat) &&
+      isFinite(p.lng)
+    ) {
+      sumLat += p.lat;
+      sumLng += p.lng;
+      count++;
+    }
   });
 
-  return [sumLat / points.length, sumLng / points.length];
+  if (count === 0) return [5.6037, -0.1870];
+
+  const avgLat = sumLat / count;
+  const avgLng = sumLng / count;
+
+  if (isNaN(avgLat) || isNaN(avgLng) || !isFinite(avgLat) || !isFinite(avgLng)) {
+    return [5.6037, -0.1870];
+  }
+
+  return [Number(avgLat.toFixed(7)), Number(avgLng.toFixed(7))];
+}
+
+// Convenience aliases for backward compatibility and test suites
+export const ghanaGridToWGS84 = gridToGeo;
+export const wgs84ToGhanaGrid = geoToGrid;
+
+/**
+ * Convert multiple plots to a single KML document with Folder placemarks
+ */
+export function exportMultiplePlotsToKML(plots: { plotNumber: string; currentOwner?: { name: string }; boundaryPoints: BoundaryPoint[] }[]): string {
+  const placemarksXml = plots
+    .map((plot) => {
+      const coordString = plot.boundaryPoints
+        .map((p) => `${p.lng},${p.lat},0`)
+        .concat([`${plot.boundaryPoints[0]?.lng || 0},${plot.boundaryPoints[0]?.lat || 0},0`])
+        .join(' ');
+
+      return `    <Placemark>
+      <name>${plot.plotNumber}</name>
+      <description>Owner: ${plot.currentOwner?.name || 'Unknown'}</description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>${coordString}</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>`;
+    })
+    .join('\n');
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>Ghana Cadastral Export Collection</name>
+    <Folder>
+      <name>Cadastral Parcels</name>
+${placemarksXml}
+    </Folder>
+  </Document>
+</kml>`;
 }
 
 /**

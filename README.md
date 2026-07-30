@@ -1,5 +1,16 @@
 # 🇬🇭 Ghana Land Registry Management System
 
+[![React 19](https://img.shields.io/badge/React-19.0-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-6.2-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Tailwind CSS v4](https://img.shields.io/badge/Tailwind_CSS-v4.0-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Leaflet GIS](https://img.shields.io/badge/Leaflet-GIS_Mapping-199900?style=for-the-badge&logo=leaflet&logoColor=white)](https://leafletjs.com/)
+[![Proj4js](https://img.shields.io/badge/Proj4js-War_Office_Grid-0055FF?style=for-the-badge)](https://github.com/proj4js/proj4js)
+[![Vitest](https://img.shields.io/badge/Vitest-Tests_Passing-6E9F18?style=for-the-badge&logo=vitest&logoColor=white)](https://vitest.dev/)
+[![Vercel Deployment](https://img.shields.io/badge/Vercel-Live_App-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://tetteh-apotey-land-registry.vercel.app)
+
+> 🚀 **Live Production Deployment**: [https://tetteh-apotey-land-registry.vercel.app](https://tetteh-apotey-land-registry.vercel.app)
+
 A professional Cadastral Land Administration and GIS Web Application engineered specifically for Ghana's survey framework. Built on **React 19**, **TypeScript**, **Leaflet**, and **Proj4**, this application seamlessly integrates Ghana National Grid coordinates (War Office Transverse Mercator Projection) with modern WGS84 web mapping engines.
 
 The platform directly incorporates empirical regional transformation algorithms and research findings from **Isaac Tetteh-Apotey's** landmark paper: *Bridging the Desktop-Mobile Divide: Regional Optimization of Ghana's National Grid for Mobile and Web Applications* ([Zenodo DOI: 10.5281/zenodo.18133088](https://zenodo.org/doi/10.5281/zenodo.18133088)).

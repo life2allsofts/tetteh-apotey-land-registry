@@ -125,7 +125,10 @@ export const MapView: React.FC = () => {
     plotLayersRef.current = {};
 
     filteredPlots.forEach((plot) => {
-      const latLngs: [number, number][] = plot.boundaryPoints.map((p) => [p.lat, p.lng]);
+      const latLngs: [number, number][] = (plot.boundaryPoints || [])
+        .filter((p) => p && typeof p.lat === 'number' && typeof p.lng === 'number' && !isNaN(p.lat) && !isNaN(p.lng) && isFinite(p.lat) && isFinite(p.lng))
+        .map((p) => [p.lat, p.lng]);
+
       if (latLngs.length < 3) return;
 
       const colorScheme = LAND_USE_COLORS[plot.landUse] || LAND_USE_COLORS.Other;
@@ -155,11 +158,11 @@ export const MapView: React.FC = () => {
           <div style="background: #F8FAFC; padding: 8px; border-radius: 6px; border: 1px solid #E2E8F0; margin-bottom: 8px; font-size: 11px;">
             <div style="margin-bottom: 3px;"><strong>Owner:</strong> ${plot.currentOwner.name}</div>
             <div style="margin-bottom: 3px;"><strong>Town:</strong> ${plot.nearestTown}</div>
-            <div><strong>Area:</strong> ${plot.areaAcres} Acres (${plot.areaSqFt.toLocaleString()} sq ft)</div>
+            <div><strong>Area:</strong> ${plot.areaAcres} Acres (${plot.areaSqFt ? plot.areaSqFt.toLocaleString() : 0} sq ft)</div>
           </div>
 
           <div style="font-size: 10px; color: #475569; margin-bottom: 8px;">
-            <strong>Ghana Grid Centroid:</strong> ${plot.boundaryPoints[0]?.easting.toLocaleString()} ft E, ${plot.boundaryPoints[0]?.northing.toLocaleString()} ft N
+            <strong>Ghana Grid Centroid:</strong> ${plot.boundaryPoints[0]?.easting ? plot.boundaryPoints[0].easting.toLocaleString() : 0} ft E, ${plot.boundaryPoints[0]?.northing ? plot.boundaryPoints[0].northing.toLocaleString() : 0} ft N
           </div>
 
           <button id="btn-select-plot-${plot.id}" style="width: 100%; background: #F59E0B; color: white; border: none; padding: 6px 10px; border-radius: 6px; font-weight: 700; font-size: 11px; cursor: pointer;">
@@ -195,11 +198,14 @@ export const MapView: React.FC = () => {
     if (!map || !selectedPlotId) return;
 
     const plot = plots.find((p) => p.id === selectedPlotId);
-    if (plot && plot.center) {
-      map.flyTo(plot.center, 16, { animate: true, duration: 1.2 });
-      const layer = plotLayersRef.current[plot.id];
-      if (layer) {
-        layer.openPopup();
+    if (plot && plot.center && Array.isArray(plot.center) && plot.center.length === 2) {
+      const [cLat, cLng] = plot.center;
+      if (typeof cLat === 'number' && typeof cLng === 'number' && !isNaN(cLat) && !isNaN(cLng) && isFinite(cLat) && isFinite(cLng)) {
+        map.flyTo([cLat, cLng], 16, { animate: true, duration: 1.2 });
+        const layer = plotLayersRef.current[plot.id];
+        if (layer) {
+          layer.openPopup();
+        }
       }
     }
   }, [selectedPlotId]);
@@ -212,12 +218,18 @@ export const MapView: React.FC = () => {
 
     layerGroup.clearLayers();
 
-    if (previewPoints.length === 0) return;
+    if (!previewPoints || previewPoints.length === 0) return;
 
-    const latLngs: [number, number][] = previewPoints.map((pt) => [pt.lat, pt.lng]);
+    const latLngs: [number, number][] = previewPoints
+      .filter((pt) => pt && typeof pt.lat === 'number' && typeof pt.lng === 'number' && !isNaN(pt.lat) && !isNaN(pt.lng) && isFinite(pt.lat) && isFinite(pt.lng))
+      .map((pt) => [pt.lat, pt.lng]);
 
     // Draw markers
     previewPoints.forEach((pt, index) => {
+      if (!pt || typeof pt.lat !== 'number' || typeof pt.lng !== 'number' || isNaN(pt.lat) || isNaN(pt.lng) || !isFinite(pt.lat) || !isFinite(pt.lng)) {
+        return;
+      }
+
       const marker = L.circleMarker([pt.lat, pt.lng], {
         radius: 8,
         color: '#DC2626',
@@ -256,8 +268,14 @@ export const MapView: React.FC = () => {
 
     // Auto-fit preview points
     if (latLngs.length > 0) {
-      const bounds = L.latLngBounds(latLngs);
-      map.fitBounds(bounds, { padding: [50, 50], maxZoom: 17 });
+      try {
+        const bounds = L.latLngBounds(latLngs);
+        if (bounds.isValid()) {
+          map.fitBounds(bounds, { padding: [50, 50], maxZoom: 17 });
+        }
+      } catch (err) {
+        console.warn('Invalid bounds for preview points:', err);
+      }
     }
   }, [previewPoints]);
 
