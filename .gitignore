@@ -1,0 +1,571 @@
+# 🗄️ Dependency directories
+node_modules/
+bun.lock
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# 📦 Build outputs
+dist/
+build/
+out/
+*.tsbuildinfo
+
+# 🐱 Vite cache
+.vite/
+.vite-temp/
+
+# 📊 Environment variables & secrets
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
+.env.test
+.env.staging
+
+# 🔒 Sensitive files
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.truststore
+*.secret
+*.password
+*.token
+*.session
+
+# 📁 IDE & Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.~*
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# 📊 Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+vite-debug.log*
+
+# 🔧 OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# 📁 Temporary & cache directories
+tmp/
+temp/
+.cache/
+*.tmp
+*.temp
+
+# 📊 Coverage reports
+coverage/
+.nyc_output/
+*.lcov
+
+# 📦 Package manager specific
+# npm
+.npm/
+.npmrc
+
+# yarn
+.yarn/
+.yarnrc
+.yarnrc.yml
+
+# pnpm
+.pnpm-store/
+.pnpm-debug.log
+
+# bun
+.bun/
+.bunrc
+
+# 🔧 Testing
+coverage/
+.nyc_output/
+test-results/
+jest-results.json
+
+# 🐍 Python (if any backend Python scripts)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+
+# 📁 Uploads & user data
+uploads/
+downloads/
+public/uploads/
+public/downloads/
+*.csv
+*.xlsx
+*.xls
+*.kml
+*.kmz
+*.geojson
+*.json
+!package.json
+!package-lock.json
+!tsconfig.json
+!metadata.json
+!sampleData.ts
+
+# 📁 Database files
+*.db
+*.sqlite
+*.sqlite3
+*.mongo
+*.mongodb
+dump/
+mongodb-data/
+
+# 🔐 Authentication
+.jwt/
+.jwt-secret/
+.auth/
+.session/
+
+# 📦 Docker
+docker-compose.override.yml
+docker-compose.prod.yml
+*.dockerignore
+Dockerfile.*
+.docker/
+
+# 🧪 Debugging
+*.map
+*.sourcemap
+debug/
+.breakpoints
+
+# 📁 Generated files
+generated/
+dist-ssr/
+*.generated.ts
+*.generated.js
+
+# 📊 Performance monitoring
+*.cpuprofile
+*.heapsnapshot
+*.timeline.json
+
+# 📁 Project specific
+# Uploaded files
+uploads/
+temp-uploads/
+*.xlsx.tmp
+*.csv.tmp
+
+# Backup files
+*.bak
+*.backup
+*.orig
+*.old
+
+# Google Earth cache
+*.kml.bak
+*.kmz.bak
+*.kml.tmp
+
+# GIS temp files
+*.aux
+*.rrd
+*.ovr
+*.tfw
+*.jgw
+*.pgw
+*.gfw
+
+# 📁 Documentation build
+docs/_build/
+docs/build/
+docs/output/
+
+# 📁 Storybook
+storybook-static/
+*.stories.ignore
+
+# 📁 Monorepo specific
+packages/*/dist/
+packages/*/node_modules/
+packages/*/.env
+packages/*/.next/
+
+# 🔄 Next.js specific
+.next/
+out/
+.vercel/
+
+# 🎨 Gatsby specific
+.cache/
+public/
+static/
+
+# 📱 Mobile specific
+ios/
+android/
+*.ipa
+*.apk
+*.aab
+
+# 🖥️ Desktop specific
+desktop/
+*.dmg
+*.exe
+*.msi
+
+# 📋 Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# 🐚 Shell history
+.bash_history
+.zsh_history
+.fish_history
+
+# 📋 Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+
+# 🔧 Kubernetes
+*.kubeconfig
+*.k8s.yaml
+!k8s-sample.yaml
+
+# 📦 Archives
+*.zip
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+
+# 🎯 Specific to land registry
+# Database dumps
+db-export/
+backup/
+*.sql
+*.dump
+
+# GIS data (large files)
+*.shp
+*.shx
+*.dbf
+*.prj
+*.sbn
+*.sbx
+*.cpg
+*.shp.xml
+*.qgs
+*.qgz
+*.gpkg
+*.gdb/
+*.geodatabase/
+
+# KML/KMZ files (unless sample)
+*.kml
+*.kmz
+!sample*.kml
+!template*.kml
+!*.kml.example
+
+# Survey data
+*.dat
+*.raw
+*.rw5
+*.gps
+*.cor
+*.sol
+
+# CAD files
+*.dwg
+*.dxf
+*.dgn
+*.rvt
+*.ifc
+
+# 📊 Excel (unless sample)
+*.xls
+*.xlsx
+*.xlsm
+*.xlsb
+*.csv
+!sample*.csv
+!template*.csv
+!*.csv.example
+
+# 🗺️ Geospatial cache
+*.cache
+geocache/
+tilecache/
+
+# 🎯 Environment specific overrides
+.env.*.local
+.env.*.override
+
+# 🔒 Security
+*.pem
+*.key
+*.crt
+*.csr
+*.jks
+*.pkcs12
+*.p12
+*.pfx
+*.gpg
+*.asc
+*.sig
+
+# 🔑 SSH
+.ssh/
+known_hosts
+id_rsa
+id_dsa
+id_ecdsa
+id_ed25519
+
+# 📊 Database connection strings
+*.connection
+*.connstr
+
+# 🧪 Temporary test files
+test*.tmp
+*.test.tmp
+fixtures/*.tmp
+
+# 📁 Electron builds
+dist-electron/
+release/
+
+# 🖼️ Image optimization cache
+.imagemin/
+.optimize/
+
+# 🔥 Firebase
+.firebase/
+.firebaserc.local
+firebase-debug.log
+
+# 📋 Jupyter notebooks
+*.ipynb
+*.ipynb_checkpoints/
+
+# 🧬 Machine learning
+*.pb
+*.h5
+*.pkl
+*.joblib
+*.onnx
+*.tflite
+*.mlmodel
+
+# 📁 Data directories (keep structure but ignore content)
+data/
+datasets/
+input/
+output/
+
+# Keep only specific files in data directories
+!data/.gitkeep
+!datasets/.gitkeep
+!input/.gitkeep
+!output/.gitkeep
+
+# 🎯 Application specific caches
+.leaflet-cache/
+.mapbox-cache/
+.proj4-cache/
+.proj-cache/
+.proj4-string/
+
+# 🧪 Vite test results
+test-results/
+vitest-results.json
+
+# 🔄 GitHub specific
+!.github/workflows/
+.github/ISSUE_TEMPLATE/
+.github/PULL_REQUEST_TEMPLATE/
+
+# 📦 Bun specific
+.bun-install-cache/
+.bun-upload-cache/
+
+# 🌐 CDN cache
+.cdn-cache/
+.assets-cache/
+
+# 📊 TypeScript project references
+*.tsbuildinfo
+*.tsbuildinfo.*
+
+# 🎨 Storybook
+storybook-static/
+*.stories.tsx.bak
+
+# 📋 ESLint cache
+.eslintcache
+
+# 🚀 Turbopack
+.turbo/
+
+# 🔧 Husky
+.husky/_
+
+# 📊 CodeQL
+codeql-database/
+
+# 🎯 Cypress
+cypress/screenshots/
+cypress/videos/
+cypress/downloads/
+
+# 📋 Playwright
+playwright-report/
+test-results/
+
+# 🧪 Jest
+.jest-cache/
+jest-coverage/
+
+# 📊 Performance
+.perf/
+profiling/
+
+# 🐳 Docker
+docker-compose.override.yml
+docker-compose.local.yml
+
+# 🔐 Secrets management
+*.secret.*
+*.encrypted.*
+*.gpg.*
+*.sops.yaml
+
+# 📁 Local development overrides
+*.local.*
+*-local.*
+*.dev.*
+*-dev.*
+
+# 🎨 Design tokens
+.tokens/
+.design-tokens/
+
+# 📊 Bundle analysis
+bundle-analysis/
+stats.html
+stats.json
+
+# 🌐 Local network
+*.local
+*.lan
+
+# 🗂️ Backup files from editors
+*~
+*.backup
+*.save
+*.orig
+
+# 📦 CDN vendor files (if you download them)
+vendor/
+libs/
+!libs/.gitkeep
+
+# 🎯 Application specific temp files
+.temp-uploads/
+.processing/
+.conversion-cache/
+
+# 🔄 Recycle bin
+$RECYCLE.BIN/
+
+# 📊 System specific
+System Volume Information/
+*.lnk
+*.url
+*.desktop
+*.directory
+
+# 🎯 Lock files (unless they're the main ones)
+*.lock
+!package-lock.json
+!bun.lock
+!yarn.lock
+!pnpm-lock.yaml
+
+# 🗺️ GIS style caches
+.style-cache/
+.symbology/
+
+# 📋 YAML configurations (unless needed)
+!docker-compose.yml
+!*.yaml.example
+!*.yml.example
+!*.yaml.sample
+
+# 🎨 Figma exports
+.figma/
+figma-export/
+
+# 🗂️ Monorepo root package management
+.pnpm-store/
+.nx/
+nx-cache/
+
+# 🔄 Database migration files (unless they're the source)
+*.migration.sql
+*.migration.ts
+!*.migration.example.sql
+
+# 🧬 ML model outputs
+*.model
+*.weights
+*.biases
+*.checkpoint
+
+# 📊 Experiment logs
+experiments/
+runs/
+wandb/
+mlruns/
+
+# 🔧 Debug & trace
+*.trace
+*.dump
+*.core
+*.crash
+*.stacks
+
+# 📋 Compliance & audit
+compliance-reports/
+audit-reports/
+*.audit.json
+*.compliance.json
+
+# 🎯 Final: Keep empty directories
+!.keep
+!.gitkeep
+!empty
+!README.empty

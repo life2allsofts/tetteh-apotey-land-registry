@@ -1,0 +1,6 @@
+{
+  "name": "Ghana Land Registry Management System",
+  "description": "Professional Land Administration Platform with Ghana Grid Support, automated coordinate conversion, interactive GIS visualization, and land tenure tracking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
